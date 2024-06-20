@@ -1,6 +1,6 @@
 import { Location, ParamSchema, Schema } from "express-validator";
 import { splitType } from "./split-type";
-import { OID } from "../../helpers/generate-object-id";
+import { Types } from "mongoose";
 
 export function buildParamOptions(position: Location | Location[], param: any) {
   const options: Schema = {};
@@ -64,7 +64,7 @@ export function buildTypeOptions(param: string): ParamSchema {
     options.customSanitizer = {
       options: (value: string) => {
         try {
-          return OID(value);
+          return new Types.ObjectId(value);
         } catch (error) {
           return value;
         }
