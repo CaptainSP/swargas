@@ -3,7 +3,7 @@ import BaseController from "./controllers/base-controller";
 import passport from "passport";
 
 export abstract class Router {
-  constructor(private app: Express) {}
+  constructor(public app: Express) {}
 
   public listen() {}
 
