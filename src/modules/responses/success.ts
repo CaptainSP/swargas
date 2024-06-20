@@ -1,4 +1,4 @@
-import { tr } from "../services/translator";
+import { swargasTr } from "../services/translator";
 
 export default function success(data: any) {
   return {
@@ -10,6 +10,6 @@ export default function success(data: any) {
 export function successTr(data: any) {
   return {
     success: true,
-    data: tr(data),
+    data: swargasTr(data),
   };
 }
