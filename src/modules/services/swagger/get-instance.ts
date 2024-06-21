@@ -19,10 +19,10 @@ export function getInstance(type: any) {
   const itemOptions = type.__itemOptions__;
   
   return {
-    keys: keys,
-    types: types,
-    options: options,
-    valueTypes: valueTypes,
-    itemOptions: itemOptions,
+    keys: keys || [],
+    types: types || {} as any,
+    options: options || {} as any,
+    valueTypes: valueTypes || {} as any,
+    itemOptions: itemOptions || {} as any,
   };
 }
