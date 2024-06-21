@@ -1,6 +1,6 @@
 import { getKeysOfType } from "../../swagger/object-of";
 
-export function getInstanc(type: any) {
+export function getInstance(type: any) {
   const keys = type.__keys__;
   const types = type.__types__;
   const options = type.__options__;
