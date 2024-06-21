@@ -26,7 +26,15 @@ export function buildMiddlewareFromClass<T, V>(
     options: ParamSchema;
   }[] = [];
 
-  getAllWithChildren(items, type, valueOptions, itemOptions, valueType, null, false);
+  getAllWithChildren(
+    items,
+    type,
+    valueOptions,
+    itemOptions,
+    valueType,
+    null,
+    false
+  );
   const options: Schema = {};
   for (let item of items) {
     options[item.key] = {
@@ -119,8 +127,7 @@ function getAllWithChildren<T, V>(
   } else if (isArrayConstructor(param) || Array.isArray(param)) {
     getItemsOfArrayParam(
       items,
-      param,
-      param?.length > 0 ? param[0] : valueType,
+      param?.length && param?.length > 0 ? param[0] : valueType,
       paramOptions,
       itemOptions,
       parent
@@ -172,7 +179,6 @@ function getItemsOfArrayParam<T, V>(
     key: string;
     options: ParamSchema;
   }[],
-  itemType: new () => T,
   valueType: new () => V,
   options: ParamSchema,
   itemOptions: ParamSchema,
@@ -190,7 +196,7 @@ function getItemsOfArrayParam<T, V>(
 
   getAllWithChildren(
     items,
-    itemType,
+    valueType,
     itemOptions,
     {},
     valueType,
