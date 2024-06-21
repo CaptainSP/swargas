@@ -49,6 +49,7 @@ function buildSchema(target: any, propertyKey: string, params: any[]) {
     const type = Reflect.getMetadata("design:paramtypes", target, propertyKey)[
       param.index
     ];
+    console.log("type", type);
     const valueType = Reflect.getMetadata(
       valueMetaDataKey,
       target,
