@@ -18,7 +18,7 @@ export function item<T>(
       target.constructor.__valueTypes__ = {};
     }
 
-    if (!target.constuctor.__itemOptions__) {
+    if (!target.constructor.__itemOptions__) {
       target.constructor.__itemOptions__ = {};
     }
 
