@@ -117,7 +117,11 @@ export function Success(data: any) {
   };
 }
 
-export function Body<T>(param: any = null, options: ParameterOptions = {}, valueType : new () => T = null, valueOptions: ParameterOptions = {}) {
+export function Body<T>(
+  options: ParameterOptions = {},
+  valueType: new () => T = null,
+  valueOptions: ParameterOptions = {}
+) {
   return function (
     target: Object,
     propertyKey: string | symbol,
@@ -128,11 +132,16 @@ export function Body<T>(param: any = null, options: ParameterOptions = {}, value
       target,
       propertyKey,
       parameterIndex,
-      param,
+      null,
       options
     );
     Reflect.defineMetadata(valueMetaDataKey, valueType, target, propertyKey);
-    Reflect.defineMetadata(valueOptionsMetaDataKey, valueOptions, target, propertyKey);
+    Reflect.defineMetadata(
+      valueOptionsMetaDataKey,
+      valueOptions,
+      target,
+      propertyKey
+    );
   };
 }
 
