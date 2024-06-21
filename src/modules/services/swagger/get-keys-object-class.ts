@@ -17,6 +17,7 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
   let value: any = {};
   const instance = getInstance(obj);
   let keys = instance.keys;
+  
 
   for (let key of keys) {
     let type = instance.types[key];

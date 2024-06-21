@@ -7,6 +7,11 @@ export function item<T>(
 ) {
   return function (target: any, propertyKey: string) {
     const type = Reflect.getMetadata("design:type", target, propertyKey);
+
+    if (!target.constructor.__keys__) {
+      target.constructor.__keys__ = [];
+    }
+
     if (!target.constructor.__types__) {
       target.constructor.__types__ = {};
     }
@@ -21,6 +26,8 @@ export function item<T>(
     if (!target.constructor.__itemOptions__) {
       target.constructor.__itemOptions__ = {};
     }
+
+    target.constructor.__keys__.push(propertyKey);
 
     target.constructor.__types__[propertyKey] = type;
 
