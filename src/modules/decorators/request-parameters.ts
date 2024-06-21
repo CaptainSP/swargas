@@ -12,6 +12,8 @@ export const userMetaDataKey = Symbol("AppUser");
 export const optionsMetaDataKey = Symbol("AppOptions");
 export const paginationMetaDataKey = Symbol("AppPagination");
 export const analyseMetaDataKey = Symbol("AppAnalyse");
+export const valueMetaDataKey = Symbol("AppValue");
+export const valueOptionsMetaDataKey = Symbol("AppValueOptions");
 
 function defineMetadata(
   metaDataKey: Symbol,
@@ -115,7 +117,7 @@ export function Success(data: any) {
   };
 }
 
-export function Body(param: any, options: ParameterOptions = {}) {
+export function Body<T>(param: any = null, options: ParameterOptions = {}, valueType : new () => T = null, valueOptions: ParameterOptions = {}) {
   return function (
     target: Object,
     propertyKey: string | symbol,
@@ -129,6 +131,8 @@ export function Body(param: any, options: ParameterOptions = {}) {
       param,
       options
     );
+    Reflect.defineMetadata(valueMetaDataKey, valueType, target, propertyKey);
+    Reflect.defineMetadata(valueOptionsMetaDataKey, valueOptions, target, propertyKey);
   };
 }
 

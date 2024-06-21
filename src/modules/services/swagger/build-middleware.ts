@@ -6,6 +6,8 @@ import {
   paramMetaDataKey,
   queryMetaDataKey,
   requestMetaDataKey,
+  valueMetaDataKey,
+  valueOptionsMetaDataKey,
 } from "../../decorators/request-parameters";
 import {
   Location,
@@ -16,6 +18,7 @@ import {
 } from "express-validator";
 import { buildParamOptions, buildTypeOptions } from "./build-param-options";
 import { getSwaggerType } from "./get-swagger-type";
+import { buildMiddlewareFromClass } from "./build-middleware-from-class";
 
 export function buildMiddleware(
   position: Location | Location[],
@@ -62,7 +65,27 @@ export function buildMiddlewares(target: any, propertyKey: string) {
   }
 
   for (let param of bodyParams) {
-    schemas.push(buildMiddleware("body", param, target, propertyKey));
+    const type = Reflect.getMetadata("design:paramtypes", target, propertyKey)[
+      param.index
+    ];
+    const valueType = Reflect.getMetadata(
+      valueMetaDataKey,
+      target,
+      propertyKey
+    );
+    const options = Reflect.getMetadata(
+      optionsMetaDataKey,
+      target,
+      propertyKey
+    );
+    const valueOptions = Reflect.getMetadata(
+      valueOptionsMetaDataKey,
+      target,
+      propertyKey
+    );
+    schemas.push(
+      buildMiddlewareFromClass(type, options, valueType, valueOptions)
+    );
   }
 
   for (let param of requestParams) {

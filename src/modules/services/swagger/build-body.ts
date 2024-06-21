@@ -1,8 +1,22 @@
 import { swagger } from "../../swagger/swagger";
-import { bodyMetaDataKey } from "../../decorators/request-parameters";
+import {
+  bodyMetaDataKey,
+  optionsMetaDataKey,
+  valueMetaDataKey,
+  valueOptionsMetaDataKey,
+} from "../../decorators/request-parameters";
 import { getItemsOfArray } from "./get-items-of-array";
 import { getKeysOfObject } from "./get-keys-of-object";
 import { getSwaggerType } from "./get-swagger-type";
+import {
+  isArrayConstructor,
+  isDateConstructor,
+  isEmailConstructor,
+  isNumberConstructor,
+  isStringConstructor,
+} from "./check-constructor";
+import { getItemsOfArrayClass } from "./get-items-of-array-class";
+import { getKeysOfObjectClass } from "./get-keys-object-class";
 
 export function buildBody(
   path: string,
@@ -32,22 +46,25 @@ function buildSchema(target: any, propertyKey: string, params: any[]) {
     properties: {},
   };
   for (let param of params) {
-    
-    if (typeof param.param === "object") {
-      if (Array.isArray(param.param)) {
-        return {
-          type: "array",
-          items: getItemsOfArray(param.param, true),
-        };
-      } else {
-        return {
-          type: "object",
-          properties: getKeysOfObject(param.param, true),
-        };
-      }
+    const type = Reflect.getMetadata("design:paramtypes", target, propertyKey)[
+      param.index
+    ];
+    const valueType = Reflect.getMetadata(
+      valueMetaDataKey,
+      target,
+      propertyKey
+    );
+
+    if (isArrayConstructor(type)) {
+      return {
+        type: "array",
+        items: getItemsOfArrayClass(type as any, valueType),
+      };
     } else {
-        
-      schema.properties[param.param] = getSwaggerType(target, propertyKey, param);
+      return {
+        type: "object",
+        properties: getKeysOfObjectClass(type),
+      };
     }
   }
   return schema;

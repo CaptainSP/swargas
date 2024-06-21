@@ -3,7 +3,7 @@ import { getItemsOfArray } from "./get-items-of-array";
 import { getKeysOfObject } from "./get-keys-of-object";
 
 export function getSwaggerType(target: any, propertyKey: string, param: any) {
-  if (typeof param.param !== "string") {
+  if (param.param && typeof param.param !== "string") {
     if (Array.isArray(param.param)) {
       return {
         type: "array",
