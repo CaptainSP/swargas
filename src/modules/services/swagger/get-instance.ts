@@ -17,7 +17,7 @@ export function getInstance(type: any) {
   const options = type.__options__;
   const valueTypes = type.__valueTypes__;
   const itemOptions = type.__itemOptions__;
-  console.log("keys", keys);
+  
   return {
     keys: keys,
     types: types,
