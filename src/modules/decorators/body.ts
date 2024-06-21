@@ -1,6 +1,6 @@
 import { ParamSchema } from "express-validator";
 
-function item<T>(
+export function item<T>(
   options: ParamSchema,
   itemOptions: ParamSchema = null,
   valueType: new () => T = null
