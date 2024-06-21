@@ -116,11 +116,11 @@ function getAllWithChildren<T, V>(
       },
     };
     items.push(obj);
-  } else if (isArrayConstructor(param)) {
+  } else if (isArrayConstructor(param) || Array.isArray(param)) {
     getItemsOfArrayParam(
       items,
       param,
-      valueType,
+      param?.length > 0 ? param[0] : valueType,
       paramOptions,
       itemOptions,
       parent
