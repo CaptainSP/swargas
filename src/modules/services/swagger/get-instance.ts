@@ -7,6 +7,7 @@ export function getInstance<T>(type: new () => T) {
   const options = instance.constructor.__options__;
   const valueTypes = instance.constructor.__valueTypes__;
   const itemOptions = instance.constructor.__itemOptions__;
+  console.log("keys", keys);
   return {
     instance: instance,
     keys: keys,
