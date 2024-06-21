@@ -157,7 +157,7 @@ function getItemsOfObjectParam<T, V>(
   }
 
   const instance = getInstance(param);
-  console.log("instance", instance);
+  console.log("instance",param, instance);
   for (let key of instance.keys) {
     const asString = key as string;
     const type = instance.types[key];
