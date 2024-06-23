@@ -128,7 +128,7 @@ function getAllWithChildren<T, V>(
     console.log("isArray", parent, param, valueType);
     getItemsOfArrayParam(
       items,
-      param?.length && param?.length > 0 ? param[0] : valueType,
+      valueType,
       paramOptions,
       itemOptions,
       parent
@@ -183,7 +183,7 @@ function getItemsOfArrayParam<T, V>(
   }[],
   valueType: new () => V,
   options: ParamSchema,
-  itemOptions: ParamSchema,
+  itemOptions: ParamSchema | ParamSchema[],
   parent: string
 ) {
   if (parent) {
@@ -196,13 +196,12 @@ function getItemsOfArrayParam<T, V>(
     });
   }
 
-  
   getAllWithChildren(
     items,
     valueType,
-    itemOptions,
-    {},
-    valueType,
+    Array.isArray(itemOptions) ? itemOptions[0] : itemOptions,
+    Array.isArray(itemOptions) ? itemOptions[1] : itemOptions,
+    Array.isArray(valueType) ? valueType[0] : valueType,
     parent ? parent + ".*" : parent
   );
 }
