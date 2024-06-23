@@ -28,10 +28,10 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
         items: getItemsOfArrayClass(obj[key], valueType),
       };
     } else if (
-      isStringConstructor(obj) ||
-      isNumberConstructor(obj) ||
-      isDateConstructor(obj) ||
-      isEmailConstructor(obj)
+      isStringConstructor(type) ||
+      isNumberConstructor(type) ||
+      isDateConstructor(type) ||
+      isEmailConstructor(type)
     ) {
       let ref = undefined;
       let typeValue = getConstructorAsString(valueType);
