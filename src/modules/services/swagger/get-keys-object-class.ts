@@ -3,6 +3,7 @@ import {
   isDateConstructor,
   isEmailConstructor,
   isNumberConstructor,
+  isObjectIdConstructor,
   isStringConstructor,
 } from "./check-constructor";
 import { getInstance } from "./get-instance";
@@ -31,7 +32,8 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
       isStringConstructor(type) ||
       isNumberConstructor(type) ||
       isDateConstructor(type) ||
-      isEmailConstructor(type)
+      isEmailConstructor(type) ||
+      isObjectIdConstructor(type)
     ) {
       let ref = undefined;
       let typeValue = getConstructorAsString(type as any);

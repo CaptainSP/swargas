@@ -4,6 +4,7 @@ import {
   isDateConstructor,
   isEmailConstructor,
   isNumberConstructor,
+  isObjectIdConstructor,
   isStringConstructor,
 } from "./check-constructor";
 import { getKeysOfObject } from "./get-keys-of-object";
@@ -23,8 +24,9 @@ export function getItemsOfArrayClass<T, V>(
   } else if (
     isStringConstructor(valueType) ||
     isNumberConstructor(valueType) ||
-    isDateConstructor(valueType) ||
-    isEmailConstructor(valueType)
+    isDateConstructor(valueType) || 
+    isEmailConstructor(valueType) ||
+    isObjectIdConstructor(valueType)
   ) {
     
     let ref = undefined;
