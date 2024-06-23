@@ -125,6 +125,7 @@ function getAllWithChildren<T, V>(
     };
     items.push(obj);
   } else if (isArrayConstructor(param) || Array.isArray(param)) {
+    console.log("isArray", parent, param, valueType);
     getItemsOfArrayParam(
       items,
       param?.length && param?.length > 0 ? param[0] : valueType,
@@ -195,7 +196,7 @@ function getItemsOfArrayParam<T, V>(
     });
   }
 
-  console.log("isArray", parent, valueType);
+  
   getAllWithChildren(
     items,
     valueType,
