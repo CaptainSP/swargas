@@ -126,6 +126,7 @@ function getAllWithChildren<T, V>(
   if (
     isStringConstructor(param) ||
     isNumberConstructor(param) ||
+    isBooleanConstructor(param) ||
     isDateConstructor(param) ||
     isEmailConstructor(param) ||
     isObjectIdConstructor(param)

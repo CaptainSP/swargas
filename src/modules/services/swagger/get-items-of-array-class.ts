@@ -1,6 +1,7 @@
 import { type } from "os";
 import {
   isArrayConstructor,
+  isBooleanConstructor,
   isDateConstructor,
   isEmailConstructor,
   isNumberConstructor,
@@ -26,7 +27,8 @@ export function getItemsOfArrayClass<T, V>(
     isNumberConstructor(valueType) ||
     isDateConstructor(valueType) || 
     isEmailConstructor(valueType) ||
-    isObjectIdConstructor(valueType)
+    isObjectIdConstructor(valueType) ||
+    isBooleanConstructor(valueType)
   ) {
     
     let ref = undefined;

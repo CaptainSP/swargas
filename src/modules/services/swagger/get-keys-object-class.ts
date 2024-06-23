@@ -1,5 +1,6 @@
 import {
   isArrayConstructor,
+  isBooleanConstructor,
   isDateConstructor,
   isEmailConstructor,
   isNumberConstructor,
@@ -33,7 +34,8 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
       isNumberConstructor(type) ||
       isDateConstructor(type) ||
       isEmailConstructor(type) ||
-      isObjectIdConstructor(type)
+      isObjectIdConstructor(type) || 
+      isBooleanConstructor(type)
     ) {
       let ref = undefined;
       let typeValue = getConstructorAsString(type as any);
