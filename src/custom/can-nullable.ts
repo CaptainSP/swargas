@@ -1,0 +1,1 @@
+export const canNullable = { options: { nullable: true, checkFalsy:true } };

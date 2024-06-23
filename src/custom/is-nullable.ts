@@ -1,1 +1,0 @@
-export const isNullable = { options: { nullable: true, checkFalsy:true } };
