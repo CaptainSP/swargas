@@ -47,12 +47,12 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
         typeValue = "string";
       }
 
-      return {
+      value[key] = {
         type: typeValue,
         $ref: ref,
       };
     } else {
-      return {
+      value[key] = {
         type: "object",
         properties: getKeysOfObjectClass(valueType),
       };
