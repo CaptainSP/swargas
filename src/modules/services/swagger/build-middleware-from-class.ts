@@ -43,7 +43,8 @@ export function buildMiddlewareFromClass<T, V>(
       ...item.options,
     };
   }
-  
+
+  console.log(options);
   return options;
 }
 
