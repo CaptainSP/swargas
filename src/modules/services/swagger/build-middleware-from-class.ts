@@ -83,9 +83,8 @@ export function buildTypeOptions<T>(param: new () => T): ParamSchema {
     options.isEmail = true;
   } else if (isDateConstructor(param)) {
     // add custom validator
-    options.isDate = true;
     options.custom = {
-      options: (value: string, {req}) => {
+      options: (value: string, { req }) => {
         return isIsoDate(value);
       },
     };
