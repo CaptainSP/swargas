@@ -125,7 +125,7 @@ function getAllWithChildren<T, V>(
     };
     items.push(obj);
   } else if (isArrayConstructor(param) || Array.isArray(param)) {
-    console.log("isArray", parent, param, valueType);
+    //console.log("isArray", parent, param, valueType);
     getItemsOfArrayParam(
       items,
       valueType,
@@ -158,7 +158,7 @@ function getItemsOfObjectParam<T, V>(
   }
 
   const instance = getInstance(param);
-  console.log("isObject", parent, param, instance);
+  //console.log("isObject", parent, param, instance);
   for (let key of instance.keys) {
     const asString = key as string;
     const type = instance.types[key];

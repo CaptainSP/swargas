@@ -1,4 +1,3 @@
-import { param } from "express-validator";
 import {
   isArrayConstructor,
   isDateConstructor,
@@ -29,10 +28,10 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
         items: getItemsOfArrayClass(obj[key], valueType),
       };
     } else if (
-      isStringConstructor(param) ||
-      isNumberConstructor(param) ||
-      isDateConstructor(param) ||
-      isEmailConstructor(param)
+      isStringConstructor(obj) ||
+      isNumberConstructor(obj) ||
+      isDateConstructor(obj) ||
+      isEmailConstructor(obj)
     ) {
       let ref = undefined;
       let typeValue = getConstructorAsString(valueType);
