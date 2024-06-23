@@ -1,4 +1,5 @@
 export function isIsoDate(str) {
+  if (!str) return false;
   if (str.includes("T")) {
     // this is datetime
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(str)) return false;
