@@ -115,7 +115,8 @@ function getAllWithChildren<T, V>(
     isStringConstructor(param) ||
     isNumberConstructor(param) ||
     isDateConstructor(param) ||
-    isEmailConstructor(param)
+    isEmailConstructor(param) ||
+    isObjectIdConstructor(param) 
   ) {
     const obj: { key: string; options: ParamSchema } = {
       key: parent,
