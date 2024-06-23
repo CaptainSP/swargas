@@ -34,7 +34,7 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
       isEmailConstructor(type)
     ) {
       let ref = undefined;
-      let typeValue = getConstructorAsString(valueType);
+      let typeValue = getConstructorAsString(type as any);
       console.log("typeValue", typeValue);
       if (
         !["string", "number", "boolean", "date", "objectId"].includes(typeValue)
