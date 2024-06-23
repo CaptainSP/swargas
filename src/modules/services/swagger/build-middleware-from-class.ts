@@ -116,7 +116,6 @@ function getAllWithChildren<T, V>(
     isDateConstructor(param) ||
     isEmailConstructor(param)
   ) {
-    console.log("is any of them", param);
     const obj: { key: string; options: ParamSchema } = {
       key: parent,
       options: {
@@ -158,7 +157,7 @@ function getItemsOfObjectParam<T, V>(
   }
 
   const instance = getInstance(param);
-  
+  console.log("isObject", parent, param, instance);
   for (let key of instance.keys) {
     const asString = key as string;
     const type = instance.types[key];
@@ -196,6 +195,7 @@ function getItemsOfArrayParam<T, V>(
     });
   }
 
+  console.log("isArray", parent, valueType);
   getAllWithChildren(
     items,
     valueType,
