@@ -54,7 +54,7 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
     } else {
       value[key] = {
         type: "object",
-        properties: getKeysOfObjectClass(valueType),
+        properties: getKeysOfObjectClass(type),
       };
     }
   }
