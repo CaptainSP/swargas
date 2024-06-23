@@ -14,6 +14,7 @@ import {
   isObjectIdConstructor,
   isArrayConstructor,
 } from "./check-constructor";
+import { isIsoDate } from "./is-iso-date";
 
 export function buildMiddlewareFromClass<T, V>(
   type: new () => T,
@@ -42,7 +43,7 @@ export function buildMiddlewareFromClass<T, V>(
       ...item.options,
     };
   }
-  console.log("built middleware",options);
+  console.log("built middleware", options);
   return options;
 }
 
@@ -81,7 +82,18 @@ export function buildTypeOptions<T>(param: new () => T): ParamSchema {
   } else if (isEmailConstructor(param)) {
     options.isEmail = true;
   } else if (isDateConstructor(param)) {
+    // add custom validator
     options.isDate = true;
+    options.custom = {
+      options: (value: string, {req}) => {
+        return isIsoDate(value);
+      },
+    };
+    options.customSanitizer = {
+      options: (value: string) => {
+        return new Date(value);
+      },
+    };
   } else if (isObjectIdConstructor(param)) {
     options.isMongoId = true;
     options.customSanitizer = {
@@ -116,7 +128,7 @@ function getAllWithChildren<T, V>(
     isNumberConstructor(param) ||
     isDateConstructor(param) ||
     isEmailConstructor(param) ||
-    isObjectIdConstructor(param) 
+    isObjectIdConstructor(param)
   ) {
     const obj: { key: string; options: ParamSchema } = {
       key: parent,
@@ -128,13 +140,7 @@ function getAllWithChildren<T, V>(
     items.push(obj);
   } else if (isArrayConstructor(param) || Array.isArray(param)) {
     //console.log("isArray", parent, param, valueType);
-    getItemsOfArrayParam(
-      items,
-      valueType,
-      paramOptions,
-      itemOptions,
-      parent
-    );
+    getItemsOfArrayParam(items, valueType, paramOptions, itemOptions, parent);
   } else {
     getItemsOfObjectParam(items, param, paramOptions, parent);
   }
