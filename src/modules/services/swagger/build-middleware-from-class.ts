@@ -42,6 +42,7 @@ export function buildMiddlewareFromClass<T, V>(
       ...item.options,
     };
   }
+  console.log("built middleware",options);
   return options;
 }
 

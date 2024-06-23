@@ -35,7 +35,7 @@ export function getKeysOfObjectClass<T>(obj: new () => T) {
     ) {
       let ref = undefined;
       let typeValue = getConstructorAsString(type as any);
-      console.log("typeValue", type,typeValue);
+      
       if (
         !["string", "number", "boolean", "date", "objectId"].includes(typeValue)
       ) {
