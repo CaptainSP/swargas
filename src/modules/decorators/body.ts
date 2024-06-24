@@ -8,6 +8,8 @@ export function item<T>(
   return function (target: any, propertyKey: string) {
     const type = Reflect.getMetadata("design:type", target, propertyKey);
 
+    console.log("type", type);
+
     if (!target.constructor.__keys__) {
       target.constructor.__keys__ = [];
     }
