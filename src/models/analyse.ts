@@ -1,11 +1,11 @@
 import { ReturnModelType } from "@typegoose/typegoose";
 import {
-  AnyParamConstructor,
   BeAnObject,
   DocumentType,
+  ModelType,
 } from "@typegoose/typegoose/lib/types";
 
-export type AnalyseFn<T extends AnyParamConstructor<any>> = (
-  model: ReturnModelType<T, BeAnObject>,
+export type AnalyseFn<T> = (
+  model: ModelType<T, BeAnObject>,
   data: any
 ) => Promise<DocumentType<T>>;
