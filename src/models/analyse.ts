@@ -7,5 +7,5 @@ import {
 
 export type AnalyseFn<T> = (
   model: ModelType<T, BeAnObject>,
-  data: T
+  data: Partial<T>
 ) => Promise<DocumentType<T>>;
