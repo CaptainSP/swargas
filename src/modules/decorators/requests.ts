@@ -18,6 +18,7 @@ import {
   queryMetaDataKey,
   requestMetaDataKey,
   resMetaDataKey,
+  serviceMetaDataKey,
   userMetaDataKey,
 } from "./request-parameters";
 import { swagger } from "../swagger/swagger";
@@ -34,6 +35,15 @@ import { transformPath } from "../services/swagger/transform-path";
 import { BeAnObject } from "@typegoose/typegoose/lib/types";
 import { buildAnalyticsData } from "../services/build-data";
 import PaginateService from "../services/paginate";
+import { Service } from "../../models/service";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any;
+    }
+  }
+}
 
 function getDataByParam(
   data: any,
@@ -82,6 +92,8 @@ function executeParams(
     Reflect.getOwnMetadata(paginationMetaDataKey, target, propertyKey) || [];
   let analyseParams: any[] =
     Reflect.getOwnMetadata(analyseMetaDataKey, target, propertyKey) || [];
+  let serviceParams: any[] =
+    Reflect.getOwnMetadata(serviceMetaDataKey, target, propertyKey) || [];
   let resParams: any[] =
     Reflect.getOwnMetadata(resMetaDataKey, target, propertyKey) || [];
   let nextParams: any[] =
@@ -133,6 +145,26 @@ function executeParams(
     }
   };
 
+  let services = [];
+  for (let param of serviceParams) {
+    const type: new () => Service = Reflect.getMetadata(
+      "design:paramtypes",
+      target,
+      propertyKey
+    )[param.index];
+    const service = new type();
+
+    // check has method init
+    if (service.init) {
+      service.init(req, res, next);
+    }
+
+    services.push({
+      index: param.index,
+      value: service,
+    });
+  }
+
   const datas = [
     ...bodyParams.map((param) => getDataByParam(body, param)),
     ...queryParams.map((param) => getDataByParam(query, param)),
@@ -147,6 +179,7 @@ function executeParams(
       index: param.index,
       value: analyseMethod,
     })),
+    ...services,
     ...resParams.map((param) => ({ index: param.index, value: res })),
     ...nextParams.map((param) => ({ index: param.index, value: next })),
     ...userParams.map((param) => ({ index: param.index, value: req.user })),

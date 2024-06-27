@@ -10,6 +10,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@typegoose/typegoose": "^12.5.0",
+    "@types/express": "^4.17.21",
     "express": "^4.19.2",
     "express-useragent": "^1.0.15",
     "express-validator": "^6.15.0",

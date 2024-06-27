@@ -14,6 +14,7 @@ export const paginationMetaDataKey = Symbol("AppPagination");
 export const analyseMetaDataKey = Symbol("AppAnalyse");
 export const valueMetaDataKey = Symbol("AppValue");
 export const valueOptionsMetaDataKey = Symbol("AppValueOptions");
+export const serviceMetaDataKey = Symbol("AppService");
 
 function defineMetadata(
   metaDataKey: Symbol,
@@ -226,6 +227,23 @@ export function Analyse() {
   ) {
     defineMetadata(
       analyseMetaDataKey,
+      target,
+      propertyKey,
+      parameterIndex,
+      "",
+      {}
+    );
+  };
+}
+
+export function Service() {
+  return function (
+    target: Object,
+    propertyKey: string | symbol,
+    parameterIndex: number
+  ) {
+    defineMetadata(
+      serviceMetaDataKey,
       target,
       propertyKey,
       parameterIndex,
