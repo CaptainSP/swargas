@@ -4,6 +4,7 @@ export abstract class Service {
   protected res: Response;
   protected next: NextFunction;
   protected path: string;
+  protected method: string;
 
   /**
    * Initialize the service
@@ -15,12 +16,14 @@ export abstract class Service {
     req: Request,
     res: Response,
     next: NextFunction,
-    path: string
+    path: string,
+    method: string
   ): void {
     this.req = req;
     this.res = res;
     this.next = next;
     this.path = path;
+    this.method = method;
   }
 
   public execute(): void {}
