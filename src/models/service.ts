@@ -3,6 +3,7 @@ export abstract class Service {
   protected req: Request;
   protected res: Response;
   protected next: NextFunction;
+  protected path: string;
 
   /**
    * Initialize the service
@@ -10,9 +11,17 @@ export abstract class Service {
    * @param res Response
    * @param next NextFn
    */
-  public init(req: Request, res: Response, next: NextFunction): void {
+  public init(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    path: string
+  ): void {
     this.req = req;
     this.res = res;
     this.next = next;
+    this.path = path;
   }
+
+  public execute(): void {}
 }

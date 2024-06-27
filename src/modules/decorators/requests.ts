@@ -37,7 +37,6 @@ import { buildAnalyticsData } from "../services/build-data";
 import PaginateService from "../services/paginate";
 import { Service } from "../../models/service";
 
-
 function getDataByParam(
   data: any,
   param: {
@@ -67,10 +66,14 @@ function getDataByParam(
 function executeParams(
   target: any,
   propertyKey: string,
+  mainPath: string,
+  path: string,
   req: Request,
   res: Response,
   next: NextFunction
 ) {
+  const transFormed = transformPath("/" + mainPath + path);
+
   let bodyParams: any[] =
     Reflect.getOwnMetadata(bodyMetaDataKey, target, propertyKey) || [];
   let paramParams: any[] =
@@ -149,7 +152,11 @@ function executeParams(
 
     // check has method init
     if (service.init) {
-      service.init(req, res, next);
+      service.init(req, res, next, transFormed);
+    }
+
+    if (service.execute) {
+      service.execute();
     }
 
     services.push({
@@ -175,7 +182,10 @@ function executeParams(
     ...services,
     ...resParams.map((param) => ({ index: param.index, value: res })),
     ...nextParams.map((param) => ({ index: param.index, value: next })),
-    ...userParams.map((param) => ({ index: param.index, value: (req as any).user })),
+    ...userParams.map((param) => ({
+      index: param.index,
+      value: (req as any).user,
+    })),
   ]
     .sort((a, b) => a.index - b.index)
     .map((a) => a.value);
@@ -248,7 +258,7 @@ export function GET(path: string, ...middlewares: any[]) {
           try {
             const returnValue = await originalValue.apply(
               this,
-              executeParams(target, propertyKey, req, res, next)
+              executeParams(target, propertyKey, mainPath, path, req, res, next)
             );
             sendResponse(mainPath, path, "GET", res, returnValue);
           } catch (e) {
@@ -281,7 +291,7 @@ export function POST(path: string, ...middlewares: any[]) {
           try {
             const returnValue = await originalValue.apply(
               this,
-              executeParams(target, propertyKey, req, res, next)
+              executeParams(target, propertyKey, mainPath, path, req, res, next)
             );
             sendResponse(mainPath, path, "POST", res, returnValue);
           } catch (error) {
@@ -314,7 +324,7 @@ export function PUT(path: string, ...middlewares: any[]) {
           try {
             const returnValue = await originalValue.apply(
               this,
-              executeParams(target, propertyKey, req, res, next)
+              executeParams(target, propertyKey, mainPath, path, req, res, next)
             );
             sendResponse(mainPath, path, "PUT", res, returnValue);
           } catch (error) {
@@ -347,7 +357,7 @@ export function DELETE(path: string, ...middlewares: any[]) {
           try {
             const returnValue = await originalValue.apply(
               this,
-              executeParams(target, propertyKey, req, res, next)
+              executeParams(target, propertyKey, mainPath, path, req, res, next)
             );
             sendResponse(mainPath, path, "DELETE", res, returnValue);
           } catch (error) {
@@ -380,7 +390,7 @@ export function PATCH(path: string, ...middlewares: any[]) {
           try {
             const returnValue = await originalValue.apply(
               this,
-              executeParams(target, propertyKey, req, res, next)
+              executeParams(target, propertyKey, mainPath, path, req, res, next)
             );
             sendResponse(mainPath, path, "PATCH", res, returnValue);
           } catch (error) {
