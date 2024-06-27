@@ -32,18 +32,11 @@ import { buildMiddlewares } from "../services/swagger/build-middleware";
 import { validateParams } from "../services/swagger/validate-params";
 import { addDescriptionToSwagger } from "../services/swagger/add-description-swagger";
 import { transformPath } from "../services/swagger/transform-path";
-import { BeAnObject } from "@typegoose/typegoose/lib/types";
+import { BeAnObject, DocumentType } from "@typegoose/typegoose/lib/types";
 import { buildAnalyticsData } from "../services/build-data";
 import PaginateService from "../services/paginate";
 import { Service } from "../../models/service";
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
-    }
-  }
-}
 
 function getDataByParam(
   data: any,
@@ -137,7 +130,7 @@ function executeParams(
       const createdData = await buildAnalyticsData(req);
       return await model.create({
         data: createdData,
-        user: req.user?._id,
+        user: (req as any).user?._id,
         ...data,
       });
     } catch (e) {
@@ -182,7 +175,7 @@ function executeParams(
     ...services,
     ...resParams.map((param) => ({ index: param.index, value: res })),
     ...nextParams.map((param) => ({ index: param.index, value: next })),
-    ...userParams.map((param) => ({ index: param.index, value: req.user })),
+    ...userParams.map((param) => ({ index: param.index, value: (req as any).user })),
   ]
     .sort((a, b) => a.index - b.index)
     .map((a) => a.value);

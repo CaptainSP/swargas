@@ -15,9 +15,4 @@ export abstract class Service {
     this.res = res;
     this.next = next;
   }
-
-  /**
-   * Execute the service
-   */
-  public abstract execute(): void;
 }
