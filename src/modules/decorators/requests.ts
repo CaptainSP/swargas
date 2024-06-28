@@ -210,9 +210,12 @@ async function sendWithSeo(
       const seoResult = await seo(data?.data);
       data.seo = seoResult;
       res.status(status).send(data);
+    } else {
+      res.status(status).send(data);
     }
   } catch (e) {
     console.log("Error in: SEO: ", e);
+    console.log("Data: ", data);
     res.status(status).send(data);
   }
 }
