@@ -235,7 +235,7 @@ function sendResponse(
         returnValue
       );
       sendWithSeo(returnValue, returnValue.status, target, propertyKey, res);
-      res.status(returnValue.status).send(returnValue);
+      //res.status(returnValue.status).send(returnValue);
     } else {
       let type = typeof returnValue;
       if (type === "object") {
