@@ -48,7 +48,7 @@ export function Description(value: string) {
   };
 }
 
-export function Seo(value: (data: any) => Promise<Partial<SeoResult>>) {
+export function Seo(value: (data: any) => Promise<any>) {
   return function (
     target: Object,
     propertyKey: string | symbol,
