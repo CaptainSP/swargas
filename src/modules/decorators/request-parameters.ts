@@ -1,6 +1,7 @@
 import { getKeysOfObject } from "../services/swagger/get-keys-of-object";
 import { getItemsOfArray } from "../services/swagger/get-items-of-array";
 import { ParameterOptions } from "../swagger/types";
+import { SeoResult } from "../../models/seo";
 export const bodyMetaDataKey = Symbol("AppBody");
 export const queryMetaDataKey = Symbol("AppQuery");
 export const paramMetaDataKey = Symbol("AppParam");
@@ -44,6 +45,16 @@ export function Description(value: string) {
       description: value,
     };
     Reflect.defineMetadata("description", description, target, propertyKey);
+  };
+}
+
+export function Seo(value: (data: any) => Promise<Partial<SeoResult>>) {
+  return function (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor
+  ) {
+    Reflect.defineMetadata("seo", value, target, propertyKey);
   };
 }
 

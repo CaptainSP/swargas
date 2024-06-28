@@ -197,9 +197,31 @@ function executeParams(
   return datas;
 }
 
+async function sendWithSeo(
+  data: any,
+  status: number,
+  target: string,
+  propertyKey: string,
+  res: Response
+) {
+  try {
+    const seo = Reflect.getMetadata("seo", target, propertyKey);
+    if (seo) {
+      const seoResult = await seo(data?.data);
+      data.seo = seoResult;
+      res.status(status).send(data);
+    }
+  } catch (e) {
+    console.log("Error in: SEO: ", e);
+    res.status(status).send(data);
+  }
+}
+
 function sendResponse(
   mainPath: string,
   path: string,
+  target: string,
+  propertyKey: string,
   method: string,
   res: Response,
   returnValue: any
@@ -212,6 +234,7 @@ function sendResponse(
         returnValue.status?.toString() || "500",
         returnValue
       );
+      sendWithSeo(returnValue, returnValue.status, target, propertyKey, res);
       res.status(returnValue.status).send(returnValue);
     } else {
       let type = typeof returnValue;
@@ -225,7 +248,7 @@ function sendResponse(
         "200",
         returnValue
       );
-      res.send(returnValue);
+      sendWithSeo(returnValue, 200, target, propertyKey, res);
     }
   }
 }
@@ -270,7 +293,15 @@ export function GET(path: string, ...middlewares: any[]) {
                 next
               )
             );
-            sendResponse(mainPath, path, "GET", res, returnValue);
+            sendResponse(
+              mainPath,
+              path,
+              target,
+              propertyKey,
+              "GET",
+              res,
+              returnValue
+            );
           } catch (e) {
             console.log("Error in: GET: ", path, e);
             res.status(500).send(error(e));
@@ -312,7 +343,15 @@ export function POST(path: string, ...middlewares: any[]) {
                 next
               )
             );
-            sendResponse(mainPath, path, "POST", res, returnValue);
+            sendResponse(
+              mainPath,
+              path,
+              target,
+              propertyKey,
+              "POST",
+              res,
+              returnValue
+            );
           } catch (error) {
             console.log(error);
             res.status(500).json({ error });
@@ -354,7 +393,15 @@ export function PUT(path: string, ...middlewares: any[]) {
                 next
               )
             );
-            sendResponse(mainPath, path, "PUT", res, returnValue);
+            sendResponse(
+              mainPath,
+              path,
+              target,
+              propertyKey,
+              "PUT",
+              res,
+              returnValue
+            );
           } catch (error) {
             console.log(error);
             res.status(500).json({ error });
@@ -396,7 +443,15 @@ export function DELETE(path: string, ...middlewares: any[]) {
                 next
               )
             );
-            sendResponse(mainPath, path, "DELETE", res, returnValue);
+            sendResponse(
+              mainPath,
+              path,
+              target,
+              propertyKey,
+              "DELETE",
+              res,
+              returnValue
+            );
           } catch (error) {
             console.log(error);
             res.status(500).json({ error });
@@ -438,7 +493,15 @@ export function PATCH(path: string, ...middlewares: any[]) {
                 next
               )
             );
-            sendResponse(mainPath, path, "PATCH", res, returnValue);
+            sendResponse(
+              mainPath,
+              path,
+              target,
+              propertyKey,
+              "PATCH",
+              res,
+              returnValue
+            );
           } catch (error) {
             console.log(error);
             res.status(500).json({ error });
