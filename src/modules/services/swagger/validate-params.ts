@@ -7,7 +7,7 @@ export const validateParams = (req, res, next) => {
     return next();
   }
   const extractedErrors = [];
-  errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
+  errors.array().map((err:any) => extractedErrors.push({ [err.param]: err.msg }));
 
   return res.status(422).json({
     success:false,
