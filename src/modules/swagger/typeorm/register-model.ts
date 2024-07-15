@@ -1,9 +1,13 @@
 import { type } from "os";
-/*import { AppDataSource } from "../../../../../../data-source";
 import { swagger } from "../swagger";
 
+export const DataSource : any = null;
+
 export function registerModel(model: any) {
-  const metadata = AppDataSource.getMetadata(model);
+  if (!DataSource) {
+    return;
+  }
+  const metadata = DataSource.getMetadata(model);
   const columns = metadata.ownColumns;
 
   const properties = getProperties(columns);
@@ -16,7 +20,7 @@ export function registerModel(model: any) {
     properties: properties,
   };
   console.log(swagger)
-}*/
+}
 
 function addOneToManys(properties: any, relations: any) {
   for (const relation of relations) {
