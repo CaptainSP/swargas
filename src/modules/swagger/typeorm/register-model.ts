@@ -1,5 +1,5 @@
 import { type } from "os";
-import { AppDataSource } from "../../../../../../data-source";
+/*import { AppDataSource } from "../../../../../../data-source";
 import { swagger } from "../swagger";
 
 export function registerModel(model: any) {
@@ -16,7 +16,7 @@ export function registerModel(model: any) {
     properties: properties,
   };
   console.log(swagger)
-}
+}*/
 
 function addOneToManys(properties: any, relations: any) {
   for (const relation of relations) {
