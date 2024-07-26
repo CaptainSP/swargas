@@ -172,10 +172,10 @@ export function Query(param: any, options: ParameterOptions = {}) {
       options
     );
     // Log returntype
-    console.log(
+    /*console.log(
       "returntype",
       Reflect.getMetadata("design:returntype", target, propertyKey) == Promise
-    );
+    );*/
   };
 }
 
