@@ -134,7 +134,7 @@ function executeParams(
       const createdData = await buildAnalyticsData(req);
       return await model.create({
         data: createdData,
-        user: (req as any).user?._id,
+        user: (req as any).user?.id,
         ...data,
       });
     } catch (e) {
