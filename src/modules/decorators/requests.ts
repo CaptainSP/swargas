@@ -357,7 +357,7 @@ export function POST(path: string, ...middlewares: any[]) {
             );
           } catch (error) {
             console.log(error);
-            res.status(500).json({ error });
+            res.status(500).send({ error });
           }
         }
       );
@@ -407,7 +407,7 @@ export function PUT(path: string, ...middlewares: any[]) {
             );
           } catch (error) {
             console.log(error);
-            res.status(500).json({ error });
+            res.status(500).send({ error });
           }
         }
       );
@@ -457,7 +457,7 @@ export function DELETE(path: string, ...middlewares: any[]) {
             );
           } catch (error) {
             console.log(error);
-            res.status(500).json({ error });
+            res.status(500).send({ error });
           }
         }
       );
@@ -507,7 +507,7 @@ export function PATCH(path: string, ...middlewares: any[]) {
             );
           } catch (error) {
             console.log(error);
-            res.status(500).json({ error });
+            res.status(500).send({ error });
           }
         }
       );
