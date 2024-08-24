@@ -1,7 +1,12 @@
 import { type } from "os";
 import { swagger } from "../swagger";
 
-export const DataSource : any = null;
+export let DataSource: any = null;
+
+export function setDataSource(dataSource: any) {
+  console.log("Setting data source");
+  DataSource = dataSource;
+}
 
 export function registerModel(model: any) {
   if (!DataSource) {
@@ -14,53 +19,107 @@ export function registerModel(model: any) {
   addOneToManys(properties, metadata.oneToManyRelations);
   addManyToOnes(properties, metadata.manyToOneRelations);
   addOneToOnes(properties, metadata.oneToOneRelations);
-  
+  addManyToManys(properties, metadata.manyToManyRelations);
+
   swagger.components.schemas[model.name] = {
     type: "object",
     properties: properties,
   };
-  console.log(swagger)
+}
+
+function addManyToManys(properties: any, relations: any) {
+  for (const relation of relations) {
+    if (typeof relation.type == "string") {
+      properties[relation.propertyPath] = {
+        type: "array",
+        items: {
+          $ref: `#/components/schemas/${relation.type}`,
+        },
+      };
+    } else {
+      const constuctor = new relation.type();
+      const name = constuctor.constructor.name;
+      properties[relation.propertyPath] = {
+        type: "array",
+        items: {
+          $ref: `#/components/schemas/${name}`,
+        },
+      };
+    }
+  }
 }
 
 function addOneToManys(properties: any, relations: any) {
   for (const relation of relations) {
-    const constuctor = new relation.type();
-    const name = constuctor.constructor.name;
-    properties[relation.propertyPath] = {
-      type: "array",
-      items: {
-        $ref: `#/components/schemas/${name}`,
-      },
-    };
+    console.log(typeof relation.type);
+    if (typeof relation.type == "string") {
+      properties[relation.propertyPath] = {
+        type: "array",
+        items: {
+          $ref: `#/components/schemas/${relation.type}`,
+        },
+      };
+    } else {
+      const constuctor = new relation.type();
+      const name = constuctor.constructor.name;
+      properties[relation.propertyPath] = {
+        type: "array",
+        items: {
+          $ref: `#/components/schemas/${name}`,
+        },
+      };
+    }
   }
 }
 
 function addManyToOnes(properties: any, relations: any) {
   for (const relation of relations) {
-    const constuctor = new relation.type();
-    const name = constuctor.constructor.name;
-    properties[relation.propertyPath] = {
-      type: "object",
-      $ref: `#/components/schemas/${name}`,
-    };
+    if (typeof relation.type == "string") {
+      properties[relation.propertyPath] = {
+        type: "object",
+        $ref: `#/components/schemas/${relation.type}`,
+      };
+    } else {
+      const constuctor = new relation.type();
+      const name = constuctor.constructor.name;
+      properties[relation.propertyPath] = {
+        type: "object",
+        $ref: `#/components/schemas/${name}`,
+      };
+    }
   }
 }
 
 function addOneToOnes(properties: any, relations: any) {
   for (const relation of relations) {
-    const constuctor = new relation.type();
-    const name = constuctor.constructor.name;
-    properties[relation.propertyPath] = {
-      type: "object",
-      $ref: `#/components/schemas/${name}`,
-    };
+    if (typeof relation.type == "string") {
+      properties[relation.propertyPath] = {
+        type: "object",
+        $ref: `#/components/schemas/${relation.type}`,
+      };
+    } else {
+      const constuctor = new relation.type();
+      const name = constuctor.constructor.name;
+      properties[relation.propertyPath] = {
+        type: "object",
+        $ref: `#/components/schemas/${name}`,
+      };
+    }
   }
+}
+
+function getTypeFromFunction(path: any) {
+  const isTypeFunction = typeof path == "function";
+  if (isTypeFunction) {
+    return path();
+  }
+  return path;
 }
 
 function getProperties(columns: any) {
   const properties: any = {};
   for (const column of columns) {
-    let type = getTypeFromTypeof(column.type());
+    let type = getTypeFromTypeof(getTypeFromFunction(column.type));
     let items = undefined;
     let ref = undefined;
 
@@ -86,6 +145,9 @@ function getProperties(columns: any) {
 }
 
 function getTypeOrRef(path: any) {
+  if (!path.options) {
+    return undefined;
+  }
   if (path.options.ref) {
     // is function ref
     if (path.options.ref == Function) {
